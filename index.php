@@ -1,13 +1,13 @@
 <?php
+define('NOMBRE_INVALIDO', '**Nombre inválido');
+define('CLAVE_INVALIDA', '**Clave inválida');
+define('CORREO_INVALIDO', '**Correo inválido');
+define('TELEFONO_INVALIDO', '**Teléfono inválido');
+define('EDAD_INVALIDA', '**Información de edad inválida');
+define('FECHANAC_INVALIDA', '**Fecha de Nacimiento inválida');
+define('IDIOMA_INVALIDO', '**Idioma inválido');
 if (filter_has_var(INPUT_POST, "enviar")) {
-    define('NOMBRE_INVALIDO', '**Nombre inválido');
-    define('CLAVE_INVALIDA', '**Clave inválida');
-    define('CORREO_INVALIDO', '**Correo inválido');
-    define('TEL_INVALIDO', '**Teléfono inválido');
-    define('EDAD_INVALIDA', '**Información de edad inválida');
-    define('FECHANAC_INVALIDA', '**Fecha de Nacimiento inválida');
-    define('IDIOMA_INVALIDO', '**Idioma inválido');
-    
+
     $datos = [];
 // Lectura, saneamiento y validación del dato de nombre
 // 3 a 25 caracteres en mayúsculas y minúsculas y espacio en blanco
@@ -116,84 +116,78 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                       action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" novalidate>
                     <div class="flex-outer">
                         <div class="form-section">
-                            <label for="nombre">Nombre:</label> 
-                            <input id="nombre" type="text" name="nombre" placeholder="Introduce el nombre" />
-                            <?php if ($datos['nombre']['err'] ?? false): ?>
-                                <div class="error-section">
-                                    <div class="error"><?= constant("NOMBRE_INVALIDO") ?></div>
-                                </div>
-                            <?php endif ?>
+                            <label for="nombre">Nombre:</label>
+                            <input id="nombre" type="text" name="nombre" placeholder="Introduce el nombre" 
+                                   value ="<?= ($datos['nombre']['form']) ?? '' ?>" />
+                            <span class="error <?= ($datos['nombre']['err'] ?? false) ? 'error-visible' : '' ?>">
+                                <?= constant("NOMBRE_INVALIDO") ?>
+                            </span>                       
                         </div>
                         <div class="form-section">
-                            <label for="clave">Clave:</label> 
-                            <input id="clave" type="password" name="clave" placeholder="Introduce la clave" />
-                            <?php if ($datos['clave']['err'] ?? false): ?>
-                                <div class="error-section">
-                                    <div class="error"><?= constant("CLAVE_INVALIDA") ?></div>
-                                </div>
-                            <?php endif ?>
+                            <label for="clave">Clave:</label>
+                            <input id="clave" type="password" name="clave" placeholder="Introduce la clave"
+                                   value ="<?= ($datos['clave']['form']) ?? '' ?>" />
+                            <span class="error <?= ($datos['clave']['err'] ?? false) ? 'error-visible' : '' ?>">
+                                <?= constant("CLAVE_INVALIDA") ?>
+                            </span>
                         </div>
                         <div class="form-section">
                             <label for="correo">Correo:</label>
-                            <input id="correo" type="text"  name="correo" placeholder="Introduce el correo"  />
-                            <?php if ($datos['correo']['err'] ?? false): ?>
-                                <div class="error-section">
-                                    <div class="error"><?= constant("CORREO_INVALIDO") ?></div>
-                                </div>
-                            <?php endif ?>
+                            <input id="correo" type="text"  name="correo" placeholder="Introduce el correo"
+                                   value ="<?= ($datos['correo']['form']) ?? '' ?>" />
+                            <span class="error <?= ($datos['correo']['err'] ?? false) ? 'error-visible' : '' ?>">
+                                <?= constant("CORREO_INVALIDO") ?>
+                            </span>
                         </div>
                         <div class="form-section">
                             <label for="fechanac">Fecha de nacimiento:</Label>
-                            <input id="fechanac" type="date" name="fechanac" placeholder="Introduce la fecha de nacimiento" />
-                            <?php if ($datos['fecha_nac']['err'] ?? false): ?>
-                                <div class="error-section">
-                                    <div class="error"><?= constant("FECHANAC_INVALIDA") ?></div>
-                                </div>
-                            <?php endif ?>
+                            <input id="fechanac" type="date" name="fechanac" placeholder="Introduce la fecha de nacimiento"
+                                   value ="<?= ($datos['fecha_nac']['form']) ?? '' ?>" />
+                            <span class="error <?= ($datos['fecha_nac']['err'] ?? false) ? 'error-visible' : '' ?>">
+                                <?= constant("CORREO_INVALIDO") ?>
+                            </span>
                         </div>
                         <div class="form-section">
                             <label for="telefono">Teléfono:</Label> 
-                            <input id="telefono" type="tel" name="tel" placeholder="Introduce el teléfono" />
-                            <?php if ($datos['telefono']['err'] ?? false): ?>
-                                <div class="error-section">
-                                    <div class="error"><?= constant("TELEFONO_INVALIDO") ?></div>
-                                </div>
-                            <?php endif ?>
+                            <input id="telefono" type="tel" name="tel" placeholder="Introduce el teléfono"
+                                   value ="<?= ($datos['tel']['form']) ?? '' ?>" />
+                            <span class="error <?= ($datos['tel']['err'] ?? false) ? 'error-visible' : '' ?>">
+                                <?= constant("TELEFONO_INVALIDO") ?>
+                            </span>
                         </div>
                         <div class="form-section">
                             <label for="tienda">Tienda Preferida:</Label> 
                             <select id="tienda" name="tienda">
-                                <option value="Madrid">Madrid</option>
-                                <option value="Barcelona">Barcelona</option>
-                                <option value="Valencia">Valencia</option>
+                                <option value="Madrid" <?= ($datos['tienda']['form'] ?? '') === 'Madrid' ? 'selected' : '' ?>>Madrid</option>
+                                <option value="Barcelona" <?= ($datos['tienda']['form'] ?? '') === 'Barcelona' ? 'selected' : '' ?>>Barcelona</option>
+                                <option value="Valencia" <?= ($datos['tienda']['form'] ?? '') === 'Valencia' ? 'selected' : '' ?>>Valencia</option>
                             </select> 
                         </div>
                         <div class="form-section">
                             <label for="edad">Edad:</label> 
-                            <input id="edad" type="number" name="edad" placeholder="Introduce tu edad" />
-                        <?php if ($datos['edad']['err'] ?? false): ?>
-                                <div class="error-section">
-                                    <div class="error"><?= constant("EDAD_INVALIDA") ?></div>
-                                </div>
-                            <?php endif ?>
+                            <input id="edad" type="number" name="edad" placeholder="Introduce tu edad"
+                                   value ="<?= ($datos['edad']['form']) ?? '' ?>" />
+                            <span class="error <?= ($datos['edad']['err'] ?? false) ? 'error-visible' : '' ?>">
+                                <?= constant("EDAD_INVALIDA") ?>
+                            </span>
                         </div>
                         <div class="form-section">
                             <label>Idioma preferido:</label>
                             <div class="select-section">
                                 <div>
-                                    <input id="español" type="radio" name="idioma" value="español" /> 
+                                    <input id="español" type="radio" name="idioma" value="español" 
+                                           <?= ($datos['idioma']['form'] ?? '') === 'español' ? 'checked' : '' ?> /> 
                                     <label for="español">Español</label>
                                 </div>
                                 <div>
-                                    <input id="inglés" type="radio" name="idioma" value="inglés" /> 
+                                    <input id="inglés" type="radio" name="idioma" value="inglés" 
+                                           <?= ($datos['idioma']['form'] ?? '') === 'inglés' ? 'checked' : '' ?> /> 
                                     <label for="inglés">Inglés</label>
                                 </div>
                             </div>
-                            <?php if ($datos['idioma']['err'] ?? false): ?>
-                                <div class="error-section">
-                                    <div class="error"><?= constant("IDIOMA_INVALIDO") ?></div>
-                                </div>
-                            <?php endif ?>
+                            <span class="error <?= ($datos['idioma']['err'] ?? false) ? 'error-visible' : '' ?>">
+                                <?= constant("IDIOMA_INVALIDO") ?>
+                            </span>
                         </div>
                         <div class="form-section">
                             <label for="suscripcion">Suscripción revista:</label>
@@ -215,17 +209,11 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                     <tr>
                         <th>Campo</th>
                         <th>Valor</th>
-                        <th>Valor saneado lectura</th>
-                        <th>Valor válido/ No válido</th>
-                        <th>Valor htmlspecialchars</th>
                     </tr>
                     <?php foreach ($datos as $dato => $valores): ?>
                         <tr>
                             <td><?= $dato ?></td>
                             <td><?= $valores['form'] ?? '' ?></td>
-                            <td><?= $valores['san'] ?? '' ?></td>
-                            <td><?= ($valores['err'] ?? false) ? "$dato no es válido" : "$dato es válido" ?></td>
-                            <td><?= htmlspecialchars($valores['form'] ?? '') ?></td>
                         </tr>
                     <?php endforeach ?>
                 </table>
