@@ -83,10 +83,16 @@ if (filter_has_var(INPUT_POST, "enviar")) {
 
     $datos['idioma'] = $idioma;
 
+    // Lectura del dato de intereses
+    $intereses = [];
+    $intereses['form'] = implode(', ', filter_input(INPUT_POST, 'intereses', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?? []);
+    $datos['intereses'] = $intereses;
+
 // Validación del dato de suscripcion. Se convierte la respuesta a un valor booleano
     $suscripcion = [];
 
     $suscripcion['form'] = filter_input(INPUT_POST, 'suscripcion', FILTER_VALIDATE_BOOLEAN) ?? false;
+    $suscripcion['san'] = $suscripcion['form'] ? 'si' : 'no';
 
     $datos['suscripcion'] = $suscripcion;
 
@@ -111,7 +117,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
     <body>
         <?php if (!filter_has_var(INPUT_POST, "enviar") || $formError): ?> <!-- Si se solicita el formulario -->
             <div class="flex-page">
-                <h1>Customer Registration</h1>
+                <h1>Registro de cliente</h1>
                 <form class="capaform" nombre="registerform" 
                       action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" novalidate>
                     <div class="flex-outer">
@@ -140,19 +146,27 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                             </span>
                         </div>
                         <div class="form-section">
-                            <label for="fechanac">Fecha de nacimiento:</Label>
-                            <input id="fechanac" type="date" name="fechanac" placeholder="Introduce la fecha de nacimiento"
-                                   value ="<?= ($datos['fecha_nac']['form']) ?? '' ?>" />
-                            <span class="error <?= ($datos['fecha_nac']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= constant("CORREO_INVALIDO") ?>
-                            </span>
-                        </div>
-                        <div class="form-section">
                             <label for="telefono">Teléfono:</Label> 
                             <input id="telefono" type="tel" name="tel" placeholder="Introduce el teléfono"
                                    value ="<?= ($datos['tel']['form']) ?? '' ?>" />
                             <span class="error <?= ($datos['tel']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= constant("TELEFONO_INVALIDO") ?>
+                            </span>
+                        </div>
+                        <div class="form-section">
+                            <label for="edad">Edad:</label> 
+                            <input id="edad" type="number" name="edad" placeholder="Introduce tu edad"
+                                   value ="<?= ($datos['edad']['form']) ?? '' ?>" />
+                            <span class="error <?= ($datos['edad']['err'] ?? false) ? 'error-visible' : '' ?>">
+                                <?= constant("EDAD_INVALIDA") ?>
+                            </span>
+                        </div>
+                        <div class="form-section">
+                            <label for="fechanac">Fecha de nacimiento:</Label>
+                            <input id="fechanac" type="date" name="fechanac" placeholder="Introduce la fecha de nacimiento"
+                                   value ="<?= ($datos['fecha_nac']['form']) ?? '' ?>" />
+                            <span class="error <?= ($datos['fecha_nac']['err'] ?? false) ? 'error-visible' : '' ?>">
+                                <?= constant("CORREO_INVALIDO") ?>
                             </span>
                         </div>
                         <div class="form-section">
@@ -162,14 +176,6 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                                 <option value="Barcelona" <?= ($datos['tienda']['form'] ?? '') === 'Barcelona' ? 'selected' : '' ?>>Barcelona</option>
                                 <option value="Valencia" <?= ($datos['tienda']['form'] ?? '') === 'Valencia' ? 'selected' : '' ?>>Valencia</option>
                             </select> 
-                        </div>
-                        <div class="form-section">
-                            <label for="edad">Edad:</label> 
-                            <input id="edad" type="number" name="edad" placeholder="Introduce tu edad"
-                                   value ="<?= ($datos['edad']['form']) ?? '' ?>" />
-                            <span class="error <?= ($datos['edad']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= constant("EDAD_INVALIDA") ?>
-                            </span>
                         </div>
                         <div class="form-section">
                             <label>Idioma preferido:</label>
@@ -190,8 +196,29 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                             </span>
                         </div>
                         <div class="form-section">
+                            <label>Intereses:</label>
+                            <div class="select-section">
+                                <div>
+                                    <input id="deportes" type="checkbox" name="intereses[]" value="deportes" 
+                                           <?= str_contains($datos['intereses']['san'] ?? '', 'deportes') ? 'checked' : '' ?> />
+                                    <label for="deportes">Deportes</label>
+                                </div>
+                                <div>
+                                    <input id="musica" type="checkbox" name="intereses[]" value="musica" 
+                                           <?= str_contains($datos['intereses']['san'] ?? '', 'musica') ? 'checked' : '' ?> />
+                                    <label for="musica">Música</label>
+                                </div>
+                                <div>
+                                    <input id="lectura" type="checkbox" name="intereses[]" value="lectura" 
+                                           <?= str_contains($datos['intereses']['san'] ?? '', 'lectura') ? 'checked' : '' ?> />
+                                    <label for="lectura">Lectura</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
                             <label for="suscripcion">Suscripción revista:</label>
-                            <input id="suscripcion" type="checkbox"  name="suscripcion" /> 
+                            <input id="suscripcion" type="checkbox"  name="suscripcion" 
+                                   <?= ($datos['suscripcion']['san'] ?? '') === 'si' ? 'checked' : '' ?>/> 
                         </div>
                         <div class="form-section">
                             <div class="submit-section">
@@ -213,7 +240,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                     <?php foreach ($datos as $dato => $valores): ?>
                         <tr>
                             <td><?= $dato ?></td>
-                            <td><?= $valores['form'] ?? '' ?></td>
+                            <td><?= $valores['san'] ?? $valores['form'] ?? '' ?></td>
                         </tr>
                     <?php endforeach ?>
                 </table>

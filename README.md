@@ -14,6 +14,8 @@ Los datos introducidos deben de respetar ciertas reglas de validación que se co
 El script recibe los datos del formulario y los valida de acuerdo con las reglas de validez descritas anteriormente. En el caso en que 
 algún dato no sea válido se mostrará de nuevo el formulario con una anotación cerca del campo que indique que el valor introducido no es correcto.
 Cuando todos los valores son válidos el script responde con una página que muestra un mensaje de aceptación del formulario, por ejemplo, **formulario correcto**.
+Si hay valores inválidos en el formulario, además de mostrar las anotaciones de los campos incorrectos, los campos aparecerán rellenos con los valores
+introducidos por el usuario de manera que no tenga que volver a rellenar todos los valores de nuevo.
 
 Para facilitar la realización del ejercicio se proporciona el formulario HTML con los campos de captura de datos.
 Utiliza un array asociativo para recoger todos los datos que se van a mostrar en la tabla de la página resumen.
