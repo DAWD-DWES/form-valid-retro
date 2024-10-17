@@ -83,6 +83,23 @@ input[type="text"], input[type="password"], input[type="tel"] {
     font-weight: bold;
 }
 
+/* Contenedor para centrar la imagen */
+.foto-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Estilo de la imagen */
+.foto-usuario {
+    width: 150px; /* Ajusta el tamaño según sea necesario */
+    height: auto;
+    border-radius: 50%; /* Forma circular */
+    border: 3px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 table {
     border-collapse: collapse;
     margin: 100px 0;

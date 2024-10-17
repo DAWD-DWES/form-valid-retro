@@ -1,13 +1,16 @@
 <?php
 define('NOMBRE_INVALIDO', '**Nombre inválido');
+define('DNI_INVALIDO', '**DNI inválido');
 define('CLAVE_INVALIDA', '**Clave inválida');
 define('CORREO_INVALIDO', '**Correo inválido');
 define('TELEFONO_INVALIDO', '**Teléfono inválido');
 define('EDAD_INVALIDA', '**Información de edad inválida');
 define('FECHANAC_INVALIDA', '**Fecha de Nacimiento inválida');
 define('IDIOMA_INVALIDO', '**Idioma inválido');
-if (filter_has_var(INPUT_POST, "enviar")) {
+define('FOTO_INVALIDA', '**Foto inválida');
+define("RUTA_IMAGENES", "imagenes");
 
+if (filter_has_var(INPUT_POST, "enviar")) {
     $datos = [];
 // Lectura, saneamiento y validación del dato de nombre
 // 3 a 25 caracteres en mayúsculas y minúsculas y espacio en blanco
@@ -18,6 +21,16 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                     ['options' => ['regexp' => "/^[a-z A-Záéíóúñ]{3,25}$/"]]) === false;
 
     $datos['nombre'] = $nombre;
+
+    // Lectura y validación del dato de DNI
+    $dni = [];
+    $dni['form'] = filter_input(INPUT_POST, 'dni', FILTER_UNSAFE_RAW);
+    $dni['san'] = filter_var($dni['form'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $dni['err'] = filter_var($dni['san'], FILTER_VALIDATE_REGEXP,
+                    ['options' => ['regexp' => "/^[1-9][0-9]{7}[A-Z]$/"]]) === false ||
+            (substr($dni['san'], 8) != substr("TRWAGMYFPDXBNJZSQVHLCKE", ((int) substr($dni['san'], 0, 8) % 23), 1));
+    $datos['dni'] = $dni;
+
 // Lectura, saneamiento y validación del dato de contraseña
 // 6 a 8 caracteres con mayúsculas, minúsculas, digitos y los símbolos !@#$%^&*()+
 
@@ -96,12 +109,35 @@ if (filter_has_var(INPUT_POST, "enviar")) {
 
     $datos['suscripcion'] = $suscripcion;
 
+    // Validación y carga de la imagen
+    $foto = $_FILES['foto'];
+    $foto['err'] = false;
+// Verifica que el archivo sea de tipo JPEG o JPG
+    if ($foto['error'] == UPLOAD_ERR_OK) {
+        $foto['form'] = $foto['name'];
+        $fileType = strtolower(pathinfo($foto['name'], PATHINFO_EXTENSION));
+        $foto['err'] = !in_array($fileType, ['jpg', 'jpeg']);
+    } else {
+        $foto['err'] = true; // Error si hubo algún problema con la carga
+    }
+
+    $datos['foto'] = $foto;
+
+    // Compruebo si se han producido errores
+
     $formError = false;
     foreach ($datos as $dato => $valores) {
         if ($valores['err'] ?? false) {
             $formError = true;
             break;
         }
+    }
+
+    // Si no se han producido errores subo descargo el fichero de la foto en la carpeta de imágenes
+
+    if (!$formError) {
+        $destino = RUTA_IMAGENES . "/" . $dni['san'] . ".$fileType";
+        move_uploaded_file($foto['tmp_name'], $destino);
     }
 }
 ?>
@@ -119,7 +155,8 @@ if (filter_has_var(INPUT_POST, "enviar")) {
             <div class="flex-page">
                 <h1>Registro de cliente</h1>
                 <form class="capaform" nombre="registerform" 
-                      action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" novalidate>
+                      action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" 
+                      enctype="multipart/form-data" novalidate>
                     <div class="flex-outer">
                         <div class="form-section">
                             <label for="nombre">Nombre:</label>
@@ -127,6 +164,14 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                                    value ="<?= ($datos['nombre']['form']) ?? '' ?>" />
                             <span class="error <?= ($datos['nombre']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= constant("NOMBRE_INVALIDO") ?>
+                            </span>                       
+                        </div>
+                        <div class="form-section">
+                            <label for="nombre">DNI:</label>
+                            <input id="dni" type="text" name="dni" placeholder="Introduce el DNI (12345678A)" 
+                                   value ="<?= ($datos['dni']['form']) ?? '' ?>" />
+                            <span class="error <?= ($datos['dni']['err'] ?? false) ? 'error-visible' : '' ?>">
+                                <?= constant("DNI_INVALIDO") ?>
                             </span>                       
                         </div>
                         <div class="form-section">
@@ -221,6 +266,13 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                                    <?= ($datos['suscripcion']['san'] ?? '') === 'si' ? 'checked' : '' ?>/> 
                         </div>
                         <div class="form-section">
+                            <label for="foto">Foto:</label>
+                            <input id="foto" type="file" name="foto" accept=".jpg, .jpeg" />
+                            <span class="error <?= ($datos['foto']['err'] ?? false) ? 'error-visible' : '' ?>">
+                                <?= constant("FOTO_INVALIDA") ?>
+                            </span>
+                        </div>
+                        <div class="form-section">
                             <div class="submit-section">
                                 <input class="submit" type="submit" 
                                        value="Enviar" name="enviar" /> 
@@ -232,6 +284,11 @@ if (filter_has_var(INPUT_POST, "enviar")) {
         <?php else: ?> <!-- Si se solicita el resultado de validar los datos introducidos en el formulario -->
             <div class="summary-section">
                 <h1>Datos del cliente</h1>
+                <?php if (!$dni['err'] ?? false): ?>
+                    <div class="foto-container">
+                        <img src= "<?= $destino ?>" alt="Foto del usuario" class="foto-usuario">
+                    </div>
+                <?php endif ?>
                 <table>
                     <tr>
                         <th>Campo</th>
