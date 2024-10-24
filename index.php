@@ -16,7 +16,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
 // 3 a 25 caracteres en mayúsculas y minúsculas y espacio en blanco
     $nombre = [];
     $nombre['form'] = filter_input(INPUT_POST, 'nombre', FILTER_UNSAFE_RAW);
-    $nombre['san'] = filter_var($nombre['form'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $nombre['san'] = filter_var(trim($nombre['form']), FILTER_SANITIZE_SPECIAL_CHARS);
     $nombre['err'] = filter_var($nombre['san'], FILTER_VALIDATE_REGEXP,
                     ['options' => ['regexp' => "/^[a-z A-Záéíóúñ]{3,25}$/"]]) === false;
 
@@ -25,10 +25,10 @@ if (filter_has_var(INPUT_POST, "enviar")) {
     // Lectura y validación del dato de DNI
     $dni = [];
     $dni['form'] = filter_input(INPUT_POST, 'dni', FILTER_UNSAFE_RAW);
-    $dni['san'] = filter_var($dni['form'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $dni['san'] = filter_var(trim($dni['form']), FILTER_SANITIZE_SPECIAL_CHARS);
     $dni['err'] = filter_var($dni['san'], FILTER_VALIDATE_REGEXP,
-                    ['options' => ['regexp' => "/^[1-9][0-9]{7}[A-Z]$/"]]) === false ||
-            (substr($dni['san'], 8) != substr("TRWAGMYFPDXBNJZSQVHLCKE", ((int) substr($dni['san'], 0, 8) % 23), 1));
+                    ['options' => ['regexp' => "/^[0-9]{1-8}[A-Z]$/"]]) === false ||
+            (substr($dni['san'], -1) != substr("TRWAGMYFPDXBNJZSQVHLCKE", ((int) substr($dni['san'], 0, -1) % 23), 1));
     $datos['dni'] = $dni;
 
 // Lectura, saneamiento y validación del dato de contraseña
@@ -36,7 +36,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
 
     $clave = [];
     $clave['form'] = filter_input(INPUT_POST, 'clave', FILTER_UNSAFE_RAW);
-    $clave['san'] = filter_var($clave['form'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $clave['san'] = filter_var(trim($clave['form']), FILTER_SANITIZE_SPECIAL_CHARS);
     $clave['err'] = filter_var($clave['san'], FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => "/^[\w!@#\$%\^&\*\(\)\+]{6,8}$/"]]) === false;
 
     $datos['clave'] = $clave;
@@ -45,7 +45,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
 
     $correo = [];
     $correo['form'] = filter_input(INPUT_POST, 'correo', FILTER_UNSAFE_RAW);
-    $correo['san'] = filter_var($correo['form'], FILTER_SANITIZE_EMAIL);
+    $correo['san'] = filter_var(trim($correo['form']), FILTER_SANITIZE_EMAIL);
     $correo['err'] = filter_var($correo['san'], FILTER_VALIDATE_EMAIL) === false;
 
     $datos['correo'] = $correo;
@@ -53,8 +53,6 @@ if (filter_has_var(INPUT_POST, "enviar")) {
 
     $fechaNac = [];
     $fechaNac['form'] = filter_input(INPUT_POST, 'fechanac', FILTER_UNSAFE_RAW);
-    /*  $fechaNacError = filter_input(INPUT_POST, 'campo', FILTER_VALIDATE_REGEXP, [
-      "options" => ["regexp" => "/^.+$/"]]) === false; */
     $fechaNac['err'] = empty($fechaNac['form']);
 
     $datos['fecha_nac'] = $fechaNac;
@@ -64,8 +62,9 @@ if (filter_has_var(INPUT_POST, "enviar")) {
 
     $tel = [];
     $tel['form'] = filter_input(INPUT_POST, 'tel', FILTER_UNSAFE_RAW);
-    $tel['san'] = filter_var($tel['form'], FILTER_SANITIZE_NUMBER_INT);
-    $tel['err'] = (strlen($tel['san']) < 8 || strlen($tel['san']) > 11);
+    $tel['san'] = filter_var(trim($tel['form']), FILTER_SANITIZE_NUMBER_INT);
+    $tel['err'] = filter_var($tel['san'], FILTER_VALIDATE_REGEXP,
+                    ['options' => ['regexp' => "/^\+?[0-9]{9,15}$/"]]) === false;
 
     $datos['tel'] = $tel;
 // Lectura del dato de tienda
@@ -78,7 +77,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
     $edad = [];
 
     $edad['form'] = filter_input(INPUT_POST, 'edad', FILTER_UNSAFE_RAW);
-    $edad['san'] = filter_var($edad['form'], FILTER_SANITIZE_NUMBER_INT);
+    $edad['san'] = filter_var(trim($edad['form']), FILTER_SANITIZE_NUMBER_INT);
     $edad['err'] = filter_var($edad['san'], FILTER_VALIDATE_INT, [
                 "options" => [
                     "min_range" => 18,
@@ -161,49 +160,49 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="nombre">Nombre:</label>
                             <input id="nombre" type="text" name="nombre" placeholder="Introduce el nombre" 
-                                   value ="<?= ($datos['nombre']['form']) ?? '' ?>" />
+                                   value ="<?= htmlspecialchars($datos['nombre']['form'] ?? '') ?>" />
                             <span class="error <?= ($datos['nombre']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= constant("NOMBRE_INVALIDO") ?>
+                                <?= NOMBRE_INVALIDO ?>
                             </span>                       
                         </div>
                         <div class="form-section">
                             <label for="nombre">DNI:</label>
                             <input id="dni" type="text" name="dni" placeholder="Introduce el DNI (12345678A)" 
-                                   value ="<?= ($datos['dni']['form']) ?? '' ?>" />
+                                   value ="<?= htmlspecialchars($datos['dni']['form'] ?? '') ?>" />
                             <span class="error <?= ($datos['dni']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= constant("DNI_INVALIDO") ?>
+                                <?= DNI_INVALIDO ?>
                             </span>                       
                         </div>
                         <div class="form-section">
                             <label for="clave">Clave:</label>
                             <input id="clave" type="password" name="clave" placeholder="Introduce la clave"
-                                   value ="<?= ($datos['clave']['form']) ?? '' ?>" />
+                                   value ="<?= htmlspecialchars($datos['clave']['form'] ?? '') ?>" />
                             <span class="error <?= ($datos['clave']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= constant("CLAVE_INVALIDA") ?>
+                                <?= CLAVE_INVALIDA ?>
                             </span>
                         </div>
                         <div class="form-section">
                             <label for="correo">Correo:</label>
                             <input id="correo" type="text"  name="correo" placeholder="Introduce el correo"
-                                   value ="<?= ($datos['correo']['form']) ?? '' ?>" />
+                                   value ="<?= htmlspecialchars($datos['correo']['form'] ?? '') ?>" />
                             <span class="error <?= ($datos['correo']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= constant("CORREO_INVALIDO") ?>
+                                <?= CORREO_INVALIDO ?>
                             </span>
                         </div>
                         <div class="form-section">
                             <label for="telefono">Teléfono:</Label> 
                             <input id="telefono" type="tel" name="tel" placeholder="Introduce el teléfono"
-                                   value ="<?= ($datos['tel']['form']) ?? '' ?>" />
+                                   value ="<?= htmlspecialchars($datos['tel']['form'] ?? '') ?>" />
                             <span class="error <?= ($datos['tel']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= constant("TELEFONO_INVALIDO") ?>
+                                <?= TELEFONO_INVALIDO ?>
                             </span>
                         </div>
                         <div class="form-section">
                             <label for="edad">Edad:</label> 
                             <input id="edad" type="number" name="edad" placeholder="Introduce tu edad"
-                                   value ="<?= ($datos['edad']['form']) ?? '' ?>" />
+                                   value ="<?= htmlspecialchars($datos['edad']['form'] ?? '') ?>" />
                             <span class="error <?= ($datos['edad']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= constant("EDAD_INVALIDA") ?>
+                                <?= EDAD_INVALIDA ?>
                             </span>
                         </div>
                         <div class="form-section">
@@ -211,7 +210,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                             <input id="fechanac" type="date" name="fechanac" placeholder="Introduce la fecha de nacimiento"
                                    value ="<?= ($datos['fecha_nac']['form']) ?? '' ?>" />
                             <span class="error <?= ($datos['fecha_nac']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= constant("CORREO_INVALIDO") ?>
+                                <?= FECHANAC_INVALIDA ?>
                             </span>
                         </div>
                         <div class="form-section">
@@ -237,7 +236,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                                 </div>
                             </div>
                             <span class="error <?= ($datos['idioma']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= constant("IDIOMA_INVALIDO") ?>
+                                <?= IDIOMA_INVALIDO ?>
                             </span>
                         </div>
                         <div class="form-section">
@@ -269,7 +268,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                             <label for="foto">Foto:</label>
                             <input id="foto" type="file" name="foto" accept=".jpg, .jpeg" />
                             <span class="error <?= ($datos['foto']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= constant("FOTO_INVALIDA") ?>
+                                <?= FOTO_INVALIDA ?>
                             </span>
                         </div>
                         <div class="form-section">
@@ -292,12 +291,16 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                 <table>
                     <tr>
                         <th>Campo</th>
-                        <th>Valor</th>
+                        <th>Valor saneado input</th>
+                        <th>Valor procesado output</th>
+                        <th>Valor original</th>
                     </tr>
                     <?php foreach ($datos as $dato => $valores): ?>
                         <tr>
                             <td><?= $dato ?></td>
-                            <td><?= $valores['san'] ?? $valores['form'] ?? '' ?></td>
+                            <td><?= $valores['san'] ?? '' ?></td>
+                            <td><?= htmlspecialchars($valores['form'] ?? '') ?></td>
+                            <td><?= $valores['form'] ?? '' ?></td>
                         </tr>
                     <?php endforeach ?>
                 </table>
