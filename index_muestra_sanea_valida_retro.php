@@ -12,17 +12,15 @@ define("RUTA_IMAGENES", "imagenes");
 
 if (filter_has_var(INPUT_POST, "enviar")) {
     $datos = [];
-// Lectura, saneamiento y validación del dato de nombre
-// 3 a 25 caracteres en mayúsculas y minúsculas y espacio en blanco
+
+    // Validación de nombre como cadena de 3 a 25 caracteres en mayúsculas, minúsculas y espacios en blanco
     $nombre = [];
     $nombre['form'] = filter_input(INPUT_POST, 'nombre', FILTER_UNSAFE_RAW);
     $nombre['san'] = filter_var(trim($nombre['form']), FILTER_SANITIZE_SPECIAL_CHARS);
     $nombre['err'] = filter_var($nombre['san'], FILTER_VALIDATE_REGEXP,
                     ['options' => ['regexp' => "/^[a-z A-Záéíóúñ]{3,25}$/"]]) === false;
-
     $datos['nombre'] = $nombre;
 
-    // Lectura y validación del dato de DNI
     $dni = [];
     $dni['form'] = filter_input(INPUT_POST, 'dni', FILTER_UNSAFE_RAW);
     $dni['san'] = filter_var(trim($dni['form']), FILTER_SANITIZE_SPECIAL_CHARS);
@@ -31,51 +29,35 @@ if (filter_has_var(INPUT_POST, "enviar")) {
             (substr($dni['san'], -1) != substr("TRWAGMYFPDXBNJZSQVHLCKE", ((int) substr($dni['san'], 0, -1) % 23), 1));
     $datos['dni'] = $dni;
 
-// Lectura, saneamiento y validación del dato de contraseña
-// 6 a 8 caracteres con mayúsculas, minúsculas, digitos y los símbolos !@#$%^&*()+
-
     $clave = [];
     $clave['form'] = filter_input(INPUT_POST, 'clave', FILTER_UNSAFE_RAW);
     $clave['san'] = filter_var(trim($clave['form']), FILTER_SANITIZE_SPECIAL_CHARS);
     $clave['err'] = filter_var($clave['san'], FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => "/^[\w!@#\$%\^&\*\(\)\+]{6,8}$/"]]) === false;
-
     $datos['clave'] = $clave;
-// Lectura, saneamiento y validación del dato de correo
-// Formato correcto de correo
 
     $correo = [];
     $correo['form'] = filter_input(INPUT_POST, 'correo', FILTER_UNSAFE_RAW);
     $correo['san'] = filter_var(trim($correo['form']), FILTER_SANITIZE_EMAIL);
     $correo['err'] = filter_var($correo['san'], FILTER_VALIDATE_EMAIL) === false;
-
     $datos['correo'] = $correo;
-// Lectura del dato de fecha. La fecha ya viene validada del formulario
 
     $fechaNac = [];
     $fechaNac['form'] = filter_input(INPUT_POST, 'fechanac', FILTER_UNSAFE_RAW);
     $fechaNac['err'] = empty($fechaNac['form']);
-
     $datos['fecha_nac'] = $fechaNac;
-
-// Lectura, saneamiento y validación del dato de telefono
-// Números sin blancos    
 
     $tel = [];
     $tel['form'] = filter_input(INPUT_POST, 'tel', FILTER_UNSAFE_RAW);
     $tel['san'] = filter_var(trim($tel['form']), FILTER_SANITIZE_NUMBER_INT);
     $tel['err'] = filter_var($tel['san'], FILTER_VALIDATE_REGEXP,
                     ['options' => ['regexp' => "/^\+?[0-9]{9,15}$/"]]) === false;
-
     $datos['tel'] = $tel;
-// Lectura del dato de tienda
+
     $tienda = [];
     $tienda['form'] = filter_input(INPUT_POST, 'tienda');
-
     $datos['tienda'] = $tienda;
-// Lectura, saneamiento y validación del dato de edad. Solo pueden acceder mayores de edad
 
     $edad = [];
-
     $edad['form'] = filter_input(INPUT_POST, 'edad', FILTER_UNSAFE_RAW);
     $edad['san'] = filter_var(trim($edad['form']), FILTER_SANITIZE_NUMBER_INT);
     $edad['err'] = filter_var($edad['san'], FILTER_VALIDATE_INT, [
@@ -84,45 +66,23 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                     "max_range" => 120,
                 ]
             ]) === false;
-
     $datos['edad'] = $edad;
 
-// Lectura del dato de idioma.
     $idioma = [];
 
     $idioma['form'] = filter_input(INPUT_POST, 'idioma', FILTER_UNSAFE_RAW);
     $idioma['err'] = empty($idioma['form']);
-
     $datos['idioma'] = $idioma;
 
-    // Lectura del dato de intereses
     $intereses = [];
     $intereses['form'] = implode(', ', filter_input(INPUT_POST, 'intereses', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?? []);
     $datos['intereses'] = $intereses;
 
-// Validación del dato de suscripcion. Se convierte la respuesta a un valor booleano
     $suscripcion = [];
-
     $suscripcion['form'] = filter_input(INPUT_POST, 'suscripcion', FILTER_VALIDATE_BOOLEAN) ?? false;
     $suscripcion['san'] = $suscripcion['form'] ? 'si' : 'no';
-
     $datos['suscripcion'] = $suscripcion;
 
-    // Validación y carga de la imagen
-    $foto = $_FILES['foto'];
-    $foto['err'] = false;
-// Verifica que el archivo sea de tipo JPEG o JPG
-    if ($foto['error'] == UPLOAD_ERR_OK) {
-        $foto['form'] = $foto['name'];
-        $fileType = strtolower(pathinfo($foto['name'], PATHINFO_EXTENSION));
-        $foto['err'] = !in_array($fileType, ['jpg', 'jpeg']);
-    } else {
-        $foto['err'] = true; // Error si hubo algún problema con la carga
-    }
-
-    $datos['foto'] = $foto;
-
-    // Compruebo si se han producido errores
     // $formError = array_sum(array_column($datos, 'err')) > 0;
 
     $formError = false;
@@ -132,16 +92,8 @@ if (filter_has_var(INPUT_POST, "enviar")) {
             break;
         }
     }
-
-    // Si no se han producido errores subo descargo el fichero de la foto en la carpeta de imágenes
-
-    if (!$formError) {
-        $destino = RUTA_IMAGENES . "/" . $dni['san'] . ".$fileType";
-        move_uploaded_file($foto['tmp_name'], $destino);
-    }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -161,7 +113,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="nombre">Nombre:</label>
                             <input id="nombre" type="text" name="nombre" placeholder="Introduce el nombre" 
-                                   value="<?= $datos['nombre']['san'] ?? '' ?>" />
+                                   value="<?= $datos['nombre']['san'] ?? '' ?>"/>
                             <span class="error <?= ($datos['nombre']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= NOMBRE_INVALIDO ?>
                             </span>                       
@@ -169,22 +121,22 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="nombre">DNI:</label>
                             <input id="dni" type="text" name="dni" placeholder="Introduce el DNI (12345678A)" 
-                                   value="<?= $datos['dni']['san'] ?? '' ?>" />
+                                   value="<?= $datos['dni']['san'] ?? '' ?>"/>
                             <span class="error <?= ($datos['dni']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= DNI_INVALIDO ?>
                             </span>                       
                         </div>
                         <div class="form-section">
                             <label for="clave">Clave:</label>
-                            <input id="clave" type="password" name="clave" placeholder="Introduce la clave"
-                                   value="<?= $datos['clave']['san'] ?? '' ?>" />
+                            <input id="clave" type="password" name="clave" placeholder="Introduce la clave" 
+                                   value="<?= $datos['clave']['san'] ?? '' ?>"/>
                             <span class="error <?= ($datos['clave']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= CLAVE_INVALIDA ?>
                             </span>
                         </div>
                         <div class="form-section">
                             <label for="correo">Correo:</label>
-                            <input id="correo" type="text"  name="correo" placeholder="Introduce el correo"
+                            <input id="correo" type="text"  name="correo" placeholder="Introduce el correo" 
                                    value="<?= $datos['correo']['san'] ?? '' ?>" />
                             <span class="error <?= ($datos['correo']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= CORREO_INVALIDO ?>
@@ -192,7 +144,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         </div>
                         <div class="form-section">
                             <label for="telefono">Teléfono:</Label> 
-                            <input id="telefono" type="tel" name="tel" placeholder="Introduce el teléfono"
+                            <input id="telefono" type="tel" name="tel" placeholder="Introduce el teléfono" 
                                    value="<?= $datos['tel']['san'] ?? '' ?>" />
                             <span class="error <?= ($datos['tel']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= TELEFONO_INVALIDO ?>
@@ -200,11 +152,11 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         </div>
                         <div class="form-section">
                             <label for="edad">Edad:</label> 
-                            <input id="edad" type="number" name="edad" placeholder="Introduce tu edad"
+                            <input id="edad" type="number" name="edad" placeholder="Introduce tu edad" 
                                    value="<?= $datos['edad']['san'] ?? '' ?>" />
                             <span class="error <?= ($datos['edad']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= EDAD_INVALIDA ?>
-                            </span>
+                            </span> 
                         </div>
                         <div class="form-section">
                             <label for="fechanac">Fecha de nacimiento:</Label>
@@ -254,7 +206,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                                     <label for="musica">Música</label>
                                 </div>
                                 <div>
-                                    <input id="lectura" type="checkbox" name="intereses[]" value="lectura" 
+                                    <input id="lectura" type="checkbox" name="intereses[]" value="lectura"
                                            <?= str_contains($datos['intereses']['san'] ?? '', 'lectura') ? 'checked' : '' ?> />
                                     <label for="lectura">Lectura</label>
                                 </div>
@@ -263,14 +215,11 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="suscripcion">Suscripción revista:</label>
                             <input id="suscripcion" type="checkbox"  name="suscripcion" 
-                                   <?= ($datos['suscripcion']['san'] ?? '') === 'si' ? 'checked' : '' ?>/> 
+                                   <?= ($datos['suscripcion']['san'] ?? '') === 'si' ? 'checked' : '' ?> /> 
                         </div>
                         <div class="form-section">
                             <label for="foto">Foto:</label>
                             <input id="foto" type="file" name="foto" accept=".jpg, .jpeg" />
-                            <span class="error <?= ($datos['foto']['err'] ?? false) ? 'error-visible' : '' ?>">
-                                <?= FOTO_INVALIDA ?>
-                            </span>
                         </div>
                         <div class="form-section">
                             <div class="submit-section">

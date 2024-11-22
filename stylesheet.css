@@ -102,7 +102,6 @@ input[type="text"], input[type="password"], input[type="tel"] {
 
 table {
     border-collapse: collapse;
-    margin: 100px 0;
     font-size: 16px;
     text-align: left;
 
