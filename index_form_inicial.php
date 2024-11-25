@@ -24,7 +24,7 @@ if (!empty($_POST)) {
                         <input id="nombre" type="text" name="nombre" placeholder="Introduce el nombre" />
                     </div>
                     <div class="form-section">
-                        <label for="nombre">DNI:</label>
+                        <label for="dni">DNI:</label>
                         <input id="dni" type="text" name="dni" placeholder="Introduce el DNI (12345678A)" />                       
                     </div>
                     <div class="form-section">
@@ -33,7 +33,7 @@ if (!empty($_POST)) {
                     </div>
                     <div class="form-section">
                         <label for="correo">Correo:</label>
-                        <input id="correo" type="text"  name="correo" placeholder="Introduce el correo" />                        
+                        <input id="correo" type="email"  name="correo" placeholder="Introduce el correo" />                        
                     </div>
                     <div class="form-section">
                         <label for="telefono">Teléfono:</Label> 

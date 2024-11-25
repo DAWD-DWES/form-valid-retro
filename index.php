@@ -27,7 +27,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
     $dni['form'] = filter_input(INPUT_POST, 'dni', FILTER_UNSAFE_RAW);
     $dni['san'] = filter_var(trim($dni['form']), FILTER_SANITIZE_SPECIAL_CHARS);
     $dni['err'] = filter_var($dni['san'], FILTER_VALIDATE_REGEXP,
-                    ['options' => ['regexp' => "/^[0-9]{1-8}[A-Z]$/"]]) === false ||
+                    ['options' => ['regexp' => "/^[0-9]{1,8}[A-Z]$/"]]) === false ||
             (substr($dni['san'], -1) != substr("TRWAGMYFPDXBNJZSQVHLCKE", ((int) substr($dni['san'], 0, -1) % 23), 1));
     $datos['dni'] = $dni;
 
@@ -167,7 +167,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                             </span>                       
                         </div>
                         <div class="form-section">
-                            <label for="nombre">DNI:</label>
+                            <label for="dni">DNI:</label>
                             <input id="dni" type="text" name="dni" placeholder="Introduce el DNI (12345678A)" 
                                    value="<?= $datos['dni']['san'] ?? '' ?>" />
                             <span class="error <?= ($datos['dni']['err'] ?? false) ? 'error-visible' : '' ?>">
@@ -184,7 +184,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         </div>
                         <div class="form-section">
                             <label for="correo">Correo:</label>
-                            <input id="correo" type="text"  name="correo" placeholder="Introduce el correo"
+                            <input id="correo" type="email"  name="correo" placeholder="Introduce el correo"
                                    value="<?= $datos['correo']['san'] ?? '' ?>" />
                             <span class="error <?= ($datos['correo']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= CORREO_INVALIDO ?>
@@ -305,7 +305,9 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         </tr>
                     <?php endforeach ?>
                 </table>
-                <a href="<?= $_SERVER['PHP_SELF'] ?>" class="submit">Volver al formulario</a>
+                <div class="submit-section">
+                    <a href="<?= $_SERVER['PHP_SELF'] ?>" class="submit">Volver al formulario</a>
+                </div>
             </div>
         <?php endif ?>
     </body>

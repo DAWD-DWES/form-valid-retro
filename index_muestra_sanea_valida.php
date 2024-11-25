@@ -68,8 +68,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
     $datos['intereses'] = $intereses;
 
     $suscripcion = [];
-    $suscripcion['form'] = filter_input(INPUT_POST, 'suscripcion', FILTER_VALIDATE_BOOLEAN) ?? false;
-    $suscripcion['san'] = $suscripcion['form'] ? 'si' : 'no';
+    $suscripcion['form'] = (filter_input(INPUT_POST, 'suscripcion', FILTER_VALIDATE_BOOLEAN) ?? false) ? 'si' : 'no';
     $datos['suscripcion'] = $suscripcion;
 }
 ?>
@@ -94,7 +93,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                             <input id="nombre" type="text" name="nombre" placeholder="Introduce el nombre" />
                         </div>
                         <div class="form-section">
-                            <label for="nombre">DNI:</label>
+                            <label for="dni">DNI:</label>
                             <input id="dni" type="text" name="dni" placeholder="Introduce el DNI (12345678A)" />                       
                         </div>
                         <div class="form-section">
@@ -103,7 +102,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         </div>
                         <div class="form-section">
                             <label for="correo">Correo:</label>
-                            <input id="correo" type="text"  name="correo" placeholder="Introduce el correo" />                        
+                            <input id="correo" type="email"  name="correo" placeholder="Introduce el correo" />                        
                         </div>
                         <div class="form-section">
                             <label for="telefono">Teléfono:</Label> 
@@ -192,7 +191,9 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <?php endforeach ?>
                 </table>
             </div>
-            <a href="<?= $_SERVER['PHP_SELF'] ?>" class="submit">Volver al formulario</a>
+            <div class="submit-section">
+                <a href="<?= $_SERVER['PHP_SELF'] ?>" class="submit">Volver al formulario</a>
+            </div>
         <?php endif ?>
     </body>
 </html>
