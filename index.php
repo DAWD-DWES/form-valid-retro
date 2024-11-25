@@ -112,7 +112,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
     $foto = $_FILES['foto'];
     $foto['err'] = false;
 // Verifica que el archivo sea de tipo JPEG o JPG
-    if ($foto['error'] == UPLOAD_ERR_OK) {
+    if ($foto['error'] === UPLOAD_ERR_OK) {
         $foto['form'] = $foto['name'];
         $fileType = strtolower(pathinfo($foto['name'], PATHINFO_EXTENSION));
         $foto['err'] = !in_array($fileType, ['jpg', 'jpeg']);
