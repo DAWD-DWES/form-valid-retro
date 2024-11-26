@@ -16,8 +16,7 @@ if (!empty($_POST)) {
         <div class="flex-page">
             <h1>Registro de cliente</h1>
             <form class="capaform" name="registerform" 
-                  action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" 
-                  enctype="multipart/form-data" novalidate>
+                  action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" novalidate>
                 <div class="flex-outer">
                     <div class="form-section">
                         <label for="nombre">Nombre:</label>
@@ -88,10 +87,6 @@ if (!empty($_POST)) {
                     <div class="form-section">
                         <label for="suscripcion">Suscripción revista:</label>
                         <input id="suscripcion" type="checkbox"  name="suscripcion" /> 
-                    </div>
-                    <div class="form-section">
-                        <label for="foto">Foto:</label>
-                        <input id="foto" type="file" name="foto" accept=".jpg, .jpeg" />
                     </div>
                     <div class="form-section">
                         <div class="submit-section">

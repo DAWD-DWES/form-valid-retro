@@ -14,7 +14,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
     $dni['form'] = filter_input(INPUT_POST, 'dni', FILTER_UNSAFE_RAW);
     $dni['san'] = filter_var(trim($dni['form']), FILTER_SANITIZE_SPECIAL_CHARS);
     $dni['err'] = filter_var($dni['san'], FILTER_VALIDATE_REGEXP,
-                    ['options' => ['regexp' => "/^[0-9]{1-8}[A-Z]$/"]]) === false ||
+                    ['options' => ['regexp' => "/^[0-9]{1,8}[A-Z]$/"]]) === false ||
             (substr($dni['san'], -1) != substr("TRWAGMYFPDXBNJZSQVHLCKE", ((int) substr($dni['san'], 0, -1) % 23), 1));
     $datos['dni'] = $dni;
 

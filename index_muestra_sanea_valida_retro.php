@@ -25,7 +25,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
     $dni['form'] = filter_input(INPUT_POST, 'dni', FILTER_UNSAFE_RAW);
     $dni['san'] = filter_var(trim($dni['form']), FILTER_SANITIZE_SPECIAL_CHARS);
     $dni['err'] = filter_var($dni['san'], FILTER_VALIDATE_REGEXP,
-                    ['options' => ['regexp' => "/^[0-9]{1-8}[A-Z]$/"]]) === false ||
+                    ['options' => ['regexp' => "/^[0-9]{1,8}[A-Z]$/"]]) === false ||
             (substr($dni['san'], -1) != substr("TRWAGMYFPDXBNJZSQVHLCKE", ((int) substr($dni['san'], 0, -1) % 23), 1));
     $datos['dni'] = $dni;
 
@@ -106,8 +106,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
             <div class="flex-page">
                 <h1>Registro de cliente</h1>
                 <form class="capaform" name="registerform" 
-                      action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" 
-                      enctype="multipart/form-data" novalidate>
+                      action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" novalidate>
                     <div class="flex-outer">
                         <div class="form-section">
                             <label for="nombre">Nombre:</label>
@@ -196,17 +195,17 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                             <div class="select-section">
                                 <div>
                                     <input id="deportes" type="checkbox" name="intereses[]" value="deportes" 
-                                           <?= str_contains($datos['intereses']['san'] ?? '', 'deportes') ? 'checked' : '' ?> />
+                                           <?= str_contains($datos['intereses']['form'] ?? '', 'deportes') ? 'checked' : '' ?> />
                                     <label for="deportes">Deportes</label>
                                 </div>
                                 <div>
                                     <input id="musica" type="checkbox" name="intereses[]" value="musica" 
-                                           <?= str_contains($datos['intereses']['san'] ?? '', 'musica') ? 'checked' : '' ?> />
+                                           <?= str_contains($datos['intereses']['form'] ?? '', 'musica') ? 'checked' : '' ?> />
                                     <label for="musica">Música</label>
                                 </div>
                                 <div>
                                     <input id="lectura" type="checkbox" name="intereses[]" value="lectura"
-                                           <?= str_contains($datos['intereses']['san'] ?? '', 'lectura') ? 'checked' : '' ?> />
+                                           <?= str_contains($datos['intereses']['form'] ?? '', 'lectura') ? 'checked' : '' ?> />
                                     <label for="lectura">Lectura</label>
                                 </div>
                             </div>
@@ -214,11 +213,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="suscripcion">Suscripción revista:</label>
                             <input id="suscripcion" type="checkbox"  name="suscripcion" 
-                                   <?= ($datos['suscripcion']['san'] ?? '') === 'si' ? 'checked' : '' ?> /> 
-                        </div>
-                        <div class="form-section">
-                            <label for="foto">Foto:</label>
-                            <input id="foto" type="file" name="foto" accept=".jpg, .jpeg" />
+                                   <?= ($datos['suscripcion']['form'] ?? '') === 'si' ? 'checked' : '' ?> /> 
                         </div>
                         <div class="form-section">
                             <div class="submit-section">

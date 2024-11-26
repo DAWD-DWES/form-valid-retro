@@ -245,17 +245,17 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                             <div class="select-section">
                                 <div>
                                     <input id="deportes" type="checkbox" name="intereses[]" value="deportes" 
-                                           <?= str_contains($datos['intereses']['san'] ?? '', 'deportes') ? 'checked' : '' ?> />
+                                           <?= str_contains($datos['intereses']['form'] ?? '', 'deportes') ? 'checked' : '' ?> />
                                     <label for="deportes">Deportes</label>
                                 </div>
                                 <div>
                                     <input id="musica" type="checkbox" name="intereses[]" value="musica" 
-                                           <?= str_contains($datos['intereses']['san'] ?? '', 'musica') ? 'checked' : '' ?> />
+                                           <?= str_contains($datos['intereses']['form'] ?? '', 'musica') ? 'checked' : '' ?> />
                                     <label for="musica">Música</label>
                                 </div>
                                 <div>
                                     <input id="lectura" type="checkbox" name="intereses[]" value="lectura" 
-                                           <?= str_contains($datos['intereses']['san'] ?? '', 'lectura') ? 'checked' : '' ?> />
+                                           <?= str_contains($datos['intereses']['form'] ?? '', 'lectura') ? 'checked' : '' ?> />
                                     <label for="lectura">Lectura</label>
                                 </div>
                             </div>
@@ -263,7 +263,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="suscripcion">Suscripción revista:</label>
                             <input id="suscripcion" type="checkbox"  name="suscripcion" 
-                                   <?= ($datos['suscripcion']['san'] ?? '') === 'si' ? 'checked' : '' ?>/> 
+                                   <?= ($datos['suscripcion']['form'] ?? '') === 'si' ? 'checked' : '' ?>/> 
                         </div>
                         <div class="form-section">
                             <label for="foto">Foto:</label>

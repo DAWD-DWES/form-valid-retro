@@ -141,10 +141,6 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                             <input id="suscripcion" type="checkbox"  name="suscripcion" /> 
                         </div>
                         <div class="form-section">
-                            <label for="foto">Foto:</label>
-                            <input id="foto" type="file" name="foto" accept=".jpg, .jpeg" />
-                        </div>
-                        <div class="form-section">
                             <div class="submit-section">
                                 <input class="submit" type="submit" 
                                        value="Enviar" name="enviar" /> 
