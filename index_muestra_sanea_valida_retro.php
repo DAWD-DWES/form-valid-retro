@@ -111,7 +111,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="nombre">Nombre:</label>
                             <input id="nombre" type="text" name="nombre" placeholder="Introduce el nombre" 
-                                   value="<?= $datos['nombre']['san'] ?? '' ?>"/>
+                                   value="<?= $datos['nombre']['san'] ?? '' ?>">
                             <span class="error <?= ($datos['nombre']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= NOMBRE_INVALIDO ?>
                             </span>                       
@@ -119,7 +119,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="dni">DNI:</label>
                             <input id="dni" type="text" name="dni" placeholder="Introduce el DNI (12345678A)" 
-                                   value="<?= $datos['dni']['san'] ?? '' ?>"/>
+                                   value="<?= $datos['dni']['san'] ?? '' ?>">
                             <span class="error <?= ($datos['dni']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= DNI_INVALIDO ?>
                             </span>                       
@@ -127,7 +127,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="clave">Clave:</label>
                             <input id="clave" type="password" name="clave" placeholder="Introduce la clave" 
-                                   value="<?= $datos['clave']['san'] ?? '' ?>"/>
+                                   value="<?= $datos['clave']['san'] ?? '' ?>">
                             <span class="error <?= ($datos['clave']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= CLAVE_INVALIDA ?>
                             </span>
@@ -135,7 +135,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="correo">Correo:</label>
                             <input id="correo" type="email"  name="correo" placeholder="Introduce el correo" 
-                                   value="<?= $datos['correo']['san'] ?? '' ?>" />
+                                   value="<?= $datos['correo']['san'] ?? '' ?>">
                             <span class="error <?= ($datos['correo']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= CORREO_INVALIDO ?>
                             </span>
@@ -143,7 +143,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="telefono">Teléfono:</Label> 
                             <input id="telefono" type="tel" name="tel" placeholder="Introduce el teléfono" 
-                                   value="<?= $datos['tel']['san'] ?? '' ?>" />
+                                   value="<?= $datos['tel']['san'] ?? '' ?>">
                             <span class="error <?= ($datos['tel']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= TELEFONO_INVALIDO ?>
                             </span>
@@ -151,7 +151,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="edad">Edad:</label> 
                             <input id="edad" type="number" name="edad" placeholder="Introduce tu edad" 
-                                   value="<?= $datos['edad']['san'] ?? '' ?>" />
+                                   value="<?= $datos['edad']['san'] ?? '' ?>">
                             <span class="error <?= ($datos['edad']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= EDAD_INVALIDA ?>
                             </span> 
@@ -159,7 +159,7 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="fechanac">Fecha de nacimiento:</Label>
                             <input id="fechanac" type="date" name="fechanac"
-                                   value="<?= ($datos['fecha_nac']['form']) ?? '' ?>" />
+                                   value="<?= ($datos['fecha_nac']['form']) ?? '' ?>">
                             <span class="error <?= ($datos['fecha_nac']['err'] ?? false) ? 'error-visible' : '' ?>">
                                 <?= FECHANAC_INVALIDA ?>
                             </span>
@@ -177,12 +177,12 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                             <div class="select-section">
                                 <div>
                                     <input id="español" type="radio" name="idioma" value="español" 
-                                           <?= ($datos['idioma']['form'] ?? '') === 'español' ? 'checked' : '' ?> /> 
+                                           <?= ($datos['idioma']['form'] ?? '') === 'español' ? 'checked' : '' ?>> 
                                     <label for="español">Español</label>
                                 </div>
                                 <div>
                                     <input id="inglés" type="radio" name="idioma" value="inglés" 
-                                           <?= ($datos['idioma']['form'] ?? '') === 'inglés' ? 'checked' : '' ?> /> 
+                                           <?= ($datos['idioma']['form'] ?? '') === 'inglés' ? 'checked' : '' ?>> 
                                     <label for="inglés">Inglés</label>
                                 </div>
                             </div>
@@ -195,17 +195,17 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                             <div class="select-section">
                                 <div>
                                     <input id="deportes" type="checkbox" name="intereses[]" value="deportes" 
-                                           <?= str_contains($datos['intereses']['form'] ?? '', 'deportes') ? 'checked' : '' ?> />
+                                           <?= str_contains($datos['intereses']['form'] ?? '', 'deportes') ? 'checked' : '' ?>>
                                     <label for="deportes">Deportes</label>
                                 </div>
                                 <div>
                                     <input id="musica" type="checkbox" name="intereses[]" value="musica" 
-                                           <?= str_contains($datos['intereses']['form'] ?? '', 'musica') ? 'checked' : '' ?> />
+                                           <?= str_contains($datos['intereses']['form'] ?? '', 'musica') ? 'checked' : '' ?>>
                                     <label for="musica">Música</label>
                                 </div>
                                 <div>
                                     <input id="lectura" type="checkbox" name="intereses[]" value="lectura"
-                                           <?= str_contains($datos['intereses']['form'] ?? '', 'lectura') ? 'checked' : '' ?> />
+                                           <?= str_contains($datos['intereses']['form'] ?? '', 'lectura') ? 'checked' : '' ?>>
                                     <label for="lectura">Lectura</label>
                                 </div>
                             </div>
@@ -213,12 +213,12 @@ if (filter_has_var(INPUT_POST, "enviar")) {
                         <div class="form-section">
                             <label for="suscripcion">Suscripción revista:</label>
                             <input id="suscripcion" type="checkbox"  name="suscripcion" 
-                                   <?= ($datos['suscripcion']['form'] ?? '') === 'si' ? 'checked' : '' ?> /> 
+                                   <?= ($datos['suscripcion']['form'] ?? '') === 'si' ? 'checked' : '' ?>> 
                         </div>
                         <div class="form-section">
                             <div class="submit-section">
                                 <input class="submit" type="submit" 
-                                       value="Enviar" name="enviar" /> 
+                                       value="Enviar" name="enviar"> 
                             </div>
                         </div>
                     </div>

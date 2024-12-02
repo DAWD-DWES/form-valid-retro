@@ -20,11 +20,11 @@ if (!empty($_POST)) {
                 <div class="flex-outer">
                     <div class="form-section">
                         <label for="nombre">Nombre:</label>
-                        <input id="nombre" type="text" name="nombre" placeholder="Introduce el nombre" />
+                        <input id="nombre" type="text" name="nombre" placeholder="Introduce el nombre">
                     </div>
                     <div class="form-section">
                         <label for="dni">DNI:</label>
-                        <input id="dni" type="text" name="dni" placeholder="Introduce el DNI (12345678A)" />                       
+                        <input id="dni" type="text" name="dni" placeholder="Introduce el DNI (12345678A)">                       
                     </div>
                     <div class="form-section">
                         <label for="clave">Clave:</label>
@@ -32,19 +32,19 @@ if (!empty($_POST)) {
                     </div>
                     <div class="form-section">
                         <label for="correo">Correo:</label>
-                        <input id="correo" type="email"  name="correo" placeholder="Introduce el correo" />                        
+                        <input id="correo" type="email"  name="correo" placeholder="Introduce el correo">                        
                     </div>
                     <div class="form-section">
                         <label for="telefono">Teléfono:</Label> 
-                        <input id="telefono" type="tel" name="tel" placeholder="Introduce el teléfono" />
+                        <input id="telefono" type="tel" name="tel" placeholder="Introduce el teléfono">
                     </div>
                     <div class="form-section">
                         <label for="edad">Edad:</label> 
-                        <input id="edad" type="number" name="edad" placeholder="Introduce tu edad" />
+                        <input id="edad" type="number" name="edad" placeholder="Introduce tu edad">
                     </div>
                     <div class="form-section">
                         <label for="fechanac">Fecha de nacimiento:</Label>
-                        <input id="fechanac" type="date" name="fechanac" />
+                        <input id="fechanac" type="date" name="fechanac">
                     </div>
                     <div class="form-section">
                         <label for="tienda">Tienda Preferida:</Label> 
@@ -58,11 +58,11 @@ if (!empty($_POST)) {
                         <label>Idioma preferido:</label>
                         <div class="select-section">
                             <div>
-                                <input id="español" type="radio" name="idioma" value="español" /> 
+                                <input id="español" type="radio" name="idioma" value="español"> 
                                 <label for="español">Español</label>
                             </div>
                             <div>
-                                <input id="inglés" type="radio" name="idioma" value="inglés" /> 
+                                <input id="inglés" type="radio" name="idioma" value="inglés"> 
                                 <label for="inglés">Inglés</label>
                             </div>
                         </div>
@@ -71,27 +71,27 @@ if (!empty($_POST)) {
                         <label>Intereses:</label>
                         <div class="select-section">
                             <div>
-                                <input id="deportes" type="checkbox" name="intereses[]" value="deportes" />
+                                <input id="deportes" type="checkbox" name="intereses[]" value="deportes">
                                 <label for="deportes">Deportes</label>
                             </div>
                             <div>
-                                <input id="musica" type="checkbox" name="intereses[]" value="musica" />
+                                <input id="musica" type="checkbox" name="intereses[]" value="musica">
                                 <label for="musica">Música</label>
                             </div>
                             <div>
-                                <input id="lectura" type="checkbox" name="intereses[]" value="lectura" />
+                                <input id="lectura" type="checkbox" name="intereses[]" value="lectura">
                                 <label for="lectura">Lectura</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-section">
                         <label for="suscripcion">Suscripción revista:</label>
-                        <input id="suscripcion" type="checkbox"  name="suscripcion" /> 
+                        <input id="suscripcion" type="checkbox"  name="suscripcion"> 
                     </div>
                     <div class="form-section">
                         <div class="submit-section">
                             <input class="submit" type="submit" 
-                                   value="Enviar" name="enviar" /> 
+                                   value="Enviar" name="enviar"> 
                         </div>
                     </div>
                 </div>
